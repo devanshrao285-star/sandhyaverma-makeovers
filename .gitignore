@@ -1,0 +1,12 @@
+node_modules/
+frontend/dist/
+frontend/.astro/
+.wrangler/
+.env
+.env.*
+!.env.example
+.dev.vars
+*.log
+artifacts/
+frontend/public/media/
+frontend/src/data/published.json

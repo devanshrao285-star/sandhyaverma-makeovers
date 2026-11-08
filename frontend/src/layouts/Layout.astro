@@ -1,0 +1,56 @@
+---
+import '../styles/global.css';
+import Brand from '../components/Brand.astro';
+import { getImage } from 'astro:assets';
+import monogram from '../../public/images/sv-monogram.png';
+import { content, launchReady, revision } from '../data/content';
+interface Props { title: string; description: string; admin?: boolean }
+const { title, description, admin = false } = Astro.props;
+const path = Astro.url.pathname;
+const nav = [['/', 'Home'], ['/about/', 'About'], ['/academy/', 'Academy'], ['/services/', 'Makeup services'], ['/portfolio/', 'Portfolio'], ['/contact/', 'Contact']];
+const canonical = new URL(path, Astro.site);
+const favicon = await getImage({src:monogram,width:64,height:64,format:'png'});
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title} | {content.brand}</title><meta name="description" content={description} />
+<link rel="canonical" href={canonical} /><link rel="icon" type="image/png" href={favicon.src} />
+<meta name="theme-color" content="#111110" /><meta name="robots" content={admin || !launchReady ? 'noindex, nofollow' : 'index, follow'} />
+<meta property="og:title" content={title + ' | ' + content.brand} /><meta property="og:description" content={description} />
+<meta property="og:type" content="website" /><meta property="og:url" content={canonical} />
+<meta name="publication-revision" content={revision} />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+{!launchReady && <div class="preview-strip">PRE-LAUNCH PREVIEW <span>•</span> Temporary images, videos and testimonials will be replaced before launch</div>}
+<header class="header">
+<Brand />
+<button class="menu-toggle" aria-expanded="false" aria-controls="navigation" aria-label="Open navigation"><span></span><span></span></button>
+<nav id="navigation" aria-label="Main navigation">{nav.map(([href,label]) => <a href={href} aria-current={path === href ? 'page' : undefined}>{label}</a>)}</nav>
+<a href="/contact/" class="button button-small header-cta">Let’s talk <span aria-hidden="true">↗</span></a>
+</header>
+<main id="main"><slot /></main>
+<footer class="footer">
+<div class="footer-top"><Brand /><p>For your moment.<br /><em>For your next chapter.</em></p><a class="text-link" href="/contact/">Start a conversation ↗</a></div>
+<div class="footer-bottom"><span>© {new Date().getFullYear()} {content.brand}</span><span>Janakpuri · West Delhi · {content.openingHours}</span><div><a href="/privacy/">Privacy</a>{!launchReady && <a href="/admin/">Studio admin</a>}</div></div>
+</footer>
+<script>
+// Static pages may outlive an offer. Hide expired banners without a new build.
+const expireOffers = () => document.querySelectorAll<HTMLElement>('[data-expires]').forEach(banner => {
+ const expiry = Date.parse(banner.dataset.expires + 'T23:59:59.999+05:30');
+ if (!Number.isFinite(expiry) || Date.now() > expiry) banner.remove();
+});
+expireOffers();
+if (document.querySelector('[data-expires]')) window.setInterval(expireOffers, 1000);
+const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+toggle?.addEventListener('click', () => {
+ const expanded = toggle.getAttribute('aria-expanded') !== 'true';
+ toggle.setAttribute('aria-expanded', String(expanded));
+ toggle.setAttribute('aria-label', expanded ? 'Close navigation' : 'Open navigation');
+ document.querySelector('.header')?.classList.toggle('menu-open', expanded);
+});
+document.addEventListener('keydown', event => { if (event.key === 'Escape') { toggle?.setAttribute('aria-expanded','false'); document.querySelector('.header')?.classList.remove('menu-open'); } });
+</script>
+</body></html>

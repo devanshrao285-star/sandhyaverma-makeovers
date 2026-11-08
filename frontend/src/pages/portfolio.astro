@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeading from '../components/PageHeading.astro';
+import {content} from '../data/content';
+const categories=['All',...new Set(content.gallery.map(item=>item.category))];
+---
+<Layout title="The portfolio" description="Discover the makeup portfolio of SandhyaVermaMakeovers in Janakpuri, West Delhi. Original work will be added by the studio.">
+<PageHeading eyebrow="A CLOSER LOOK / THE PORTFOLIO" title="The art is in" accent="the details." text="A space for bridal, occasion and editorial inspiration. Preview imagery and stock videos will be replaced with original studio work before launch." />
+<section class="section-wrap portfolio-section">
+{content.gallery.length ? <><div class="filters" aria-label="Portfolio filters">{categories.map((c,i)=><button data-filter={c} aria-pressed={i===0}>{c}</button>)}</div><div class="gallery-grid">{content.gallery.map(item=><figure data-category={item.category}><img src={item.imageUrl || '/media/'+item.mediaId+'.webp'} alt={item.title} loading="lazy" width="800" height="1000" /><figcaption><span class="eyebrow">{item.category}</span><h3>{item.title}</h3></figcaption></figure>)}</div></> : <div class="portfolio-empty"><div class="empty-art"><span>SV</span><i>✦</i></div><div><span class="eyebrow">OUR ORIGINAL WORK, COMING SOON</span><h2>A gallery worth<br /><em>waiting for.</em></h2><p>The studio’s photographs will be added here with permission. In the meantime, tell us the look you are imagining.</p><a href="/contact/" class="button button-outline">Discuss your inspiration ↗</a></div></div>}
+{content.videos.length > 0 && <section class="video-showcase"><span class="eyebrow">IN MOTION / PREVIEW</span><h2>See the artistry<br /><em>come to life.</em></h2><div class="video-grid">{content.videos.map(video=><figure>{video.embedUrl.includes('videos.pexels.com') ? <video controls playsinline preload="metadata" aria-label={video.title}><source src={video.embedUrl} type="video/mp4" />Your browser does not support video playback.</video> : video.embedUrl.includes('pexels.com') ? <a class="stock-video-link" href={video.embedUrl} target="_blank" rel="noopener noreferrer"><span>▶</span><small>Watch temporary stock video ↗</small></a> : <iframe src={video.embedUrl} title={video.title} loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen /> }<figcaption><span class="eyebrow">{video.category}</span><h3>{video.title}</h3></figcaption></figure>)}</div></section>}
+</section>
+<script>
+document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(button=>button.addEventListener('click',()=>{
+ document.querySelectorAll('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+ document.querySelectorAll<HTMLElement>('[data-category]').forEach(item=>item.hidden=button.dataset.filter!=='All'&&item.dataset.category!==button.dataset.filter);
+}));
+</script>
+</Layout>

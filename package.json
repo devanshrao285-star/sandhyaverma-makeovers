@@ -1,0 +1,30 @@
+{
+  "name": "makeover-academy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --root frontend --host 127.0.0.1",
+    "build": "astro build --root frontend",
+    "check": "astro check --root frontend && tsc -p backend/tsconfig.json --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "test:integration": "node tests/integration.mjs",
+    "test:load": "node tests/load.mjs",
+    "preview": "wrangler pages dev frontend/dist --port 4321",
+    "db:local": "wrangler d1 migrations apply makeover-db --local",
+    "content:sync": "node scripts/sync-content.mjs",
+    "verify": "pnpm check && pnpm test && pnpm build"
+  },
+  "dependencies": {
+    "astro": "^5.16.0",
+    "jose": "^6.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@cloudflare/workers-types": "^4.20251101.0",
+    "@types/node": "^24.0.0",
+    "sharp": "^0.34.5",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "wrangler": "^4.50.0"
+  }
+}

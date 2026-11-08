@@ -1,0 +1,88 @@
+{
+  "brand": "SandhyaVermaMakeovers",
+  "tagline": "Celebrity Makeup Artists",
+  "phone": "+91 96503 60721",
+  "email": "devanshrao135@gmail.com",
+  "address": "C5B/7A, Janakpuri, New Delhi, Delhi 110058",
+  "openingHours": "10:00 AM–5:00 PM",
+  "home": {"eyebrow":"CELEBRITY MAKEUP ARTISTS · DELHI","title":"Not just a look.","accent":"A feeling. Entirely you.","description":"From your most-awaited moment to your first step into artistry. Discover makeup with intention, and a space to learn the craft."},
+  "services": [
+    {
+      "id": "bridal-makeup",
+      "title": "Bridal artistry",
+      "category": "Bridal",
+      "description": "A look that feels like you, for a day that is entirely yours. Share your wedding plans and inspiration with us.",
+      "price": 5099100,
+      "inclusions": [
+        "Personal look consultation",
+        "Makeup and styling requirements discussed together",
+        "Availability confirmed before booking"
+      ]
+    },
+    {
+      "id": "occasion-makeup",
+      "title": "Occasion makeup",
+      "category": "Occasion",
+      "description": "From an intimate celebration to an evening in the spotlight. Tell us the occasion and the finish you love.",
+      "price": 1098500,
+      "inclusions": [
+        "Event-focused consultation",
+        "A look tailored to your preferences",
+        "Final inclusions confirmed in your quote"
+      ]
+    },
+    {
+      "id": "editorial-makeup",
+      "title": "Editorial & celebrity",
+      "category": "Editorial",
+      "description": "Beauty made for the camera. Enquire about makeup for shoots, appearances and creative collaborations.",
+      "price": 2097200,
+      "inclusions": [
+        "Creative brief discussion",
+        "Shoot and schedule consultation",
+        "Quotation based on the project"
+      ]
+    }
+  ],
+  "courses": [
+    {
+      "id": "professional-makeup",
+      "title": "Professional makeup",
+      "description": "Explore a learning path in makeup artistry, from understanding products to building a complete look.",
+      "duration": "Curriculum & duration to be confirmed",
+      "batch": "Next batch to be announced"
+    },
+    {
+      "id": "bridal-artistry",
+      "title": "Bridal artistry",
+      "description": "Enquire about learning bridal looks, preparation and the detail that goes into a wedding-day finish.",
+      "duration": "Curriculum & duration to be confirmed",
+      "batch": "Next batch to be announced"
+    },
+    {
+      "id": "personal-grooming",
+      "title": "Personal makeup",
+      "description": "Interested in doing your own makeup? Tell us what you would like to learn in a personal session.",
+      "duration": "Session format to be confirmed",
+      "batch": "Enquire for availability"
+    }
+  ],
+  "gallery": [
+    {"id":"preview-beauty-edit","title":"The beauty edit","category":"Studio artistry","imageUrl":"/images/portfolio-cosmetics.webp"},
+    {"id":"preview-bridal-details","title":"Bridal details","category":"Bridal","imageUrl":"/images/portfolio-bridal.webp"},
+    {"id":"preview-academy-kit","title":"The artist’s kit","category":"Academy","imageUrl":"/images/portfolio-academy.webp"}
+  ],
+  "videos": [
+    {"id":"preview-brushes-film","title":"Brushes in motion","category":"Temporary stock video","embedUrl":"https://videos.pexels.com/video-files/4718669/4718669-uhd_2160_4096_25fps.mp4"}
+  ],
+  "testimonials": [
+    {"id":"preview-bridal-note","quote":"The preview testimonial area will become a space for real client stories and wedding-day feedback.","name":"Preview client","occasion":"Replace before launch","preview":true},
+    {"id":"preview-academy-note","quote":"The academy will add verified student experiences once current batches are underway.","name":"Preview student","occasion":"Replace before launch","preview":true}
+  ],
+  "offer": {
+    "title": "",
+    "description": "",
+    "enabled": false,
+    "endsAt": ""
+  }
+}

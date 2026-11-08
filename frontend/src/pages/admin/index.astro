@@ -1,0 +1,22 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Studio administration" description="Private studio administration." admin>
+<section class="admin-wrap">
+<div class="admin-heading"><div><span class="eyebrow">SANDHYA VERMA / STUDIO DESK</span><h1>A little behind<br /><em>the beautiful.</em></h1></div><a class="text-link" href="/">View website ↗</a></div>
+<div id="admin-notice" class="notice">Checking staff access…</div>
+<p id="admin-status" class="admin-status" role="status" aria-live="polite"></p>
+<div id="admin-app" hidden>
+<nav class="admin-nav" aria-label="Admin sections"><button data-tab="leads" aria-pressed="true">Enquiries</button><button data-tab="content" aria-pressed="false">Content & pricing</button><button data-tab="media" aria-pressed="false">Media library</button><button data-tab="publish" aria-pressed="false">Publish</button></nav>
+<section id="panel-leads" class="admin-panel"><h2>Your enquiry inbox</h2><p>Only enquiries saved by this connected environment appear here.</p><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Received</th><th>Customer</th><th>Interest / date</th><th>Message</th><th>Status</th></tr></thead><tbody id="lead-rows"></tbody></table></div><div class="admin-actions"><button class="button button-outline" id="refresh-leads">Refresh</button><button class="button button-outline" id="next-leads" hidden>Next 50</button></div></section>
+<section id="panel-content" class="admin-panel" hidden><h2>Page content & pricing</h2><p>Each section below maps to a visible website page. Edit text here; use Media library to assign uploaded images to the Home page, service cards and testimonials. Prices are stored in paise (₹1 = 100 paise); null means “Request a quote”.</p>
+<div id="content-fields"></div>
+<details><summary>Advanced content editor</summary><p>Use the structured editor for adding/removing services, courses or portfolio entries. IDs must be unique lowercase words separated by hyphens.</p><label class="admin-label">Full content JSON<textarea id="content-json" class="admin-editor" spellcheck="false"></textarea></label><button class="button button-outline" id="apply-json">Apply JSON to editor</button></details>
+<div class="admin-actions"><button class="button" id="save-content">Save draft</button><button class="button button-outline" id="reload-content">Reload saved draft</button></div></section>
+<p id="content-status" class="admin-status" role="status" aria-live="polite">Changes are saved only when you select Save draft.</p>
+<section id="panel-media" class="admin-panel" hidden><h2>Media library & page placement</h2><p>Upload compressed JPEG, PNG or WebP photos under 2 MB. Then choose where an image should appear before selecting it below: Portfolio makes it eligible for the Home hero; services and testimonials place it only in their named card.</p><label class="admin-label">Choose a photo<input type="file" id="media-file" accept="image/jpeg,image/png,image/webp" /></label><button class="button" id="upload-media">Upload photo</button><label class="admin-label">Place selected image on<select id="media-target"></select></label><p id="media-budget" class="form-note"></p><div id="media-items" class="media-grid"></div></section>
+<section id="panel-publish" class="admin-panel" hidden><h2>From draft to live</h2><p>Publishing requests a new static build. A queued request is not a successful deployment. The current live website remains until a build succeeds. Confirm the deployment in Cloudflare Pages.</p><div class="notice">Local preview does not deploy. Production needs a Pages deploy hook, build credential and the content-sync build command.</div><button class="button" id="publish-content">Publish saved draft ↗</button><div id="publication-list"></div></section>
+</div>
+</section>
+<script>import '../../scripts/admin';</script>
+</Layout>

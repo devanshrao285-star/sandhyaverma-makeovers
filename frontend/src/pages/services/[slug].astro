@@ -1,0 +1,10 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {content,priceLabel} from '../../data/content';
+export function getStaticPaths() {return content.services.map(service=>({params:{slug:service.id},props:{service}}));}
+const {service}=Astro.props;
+---
+<Layout title={service.title+' in Janakpuri'} description={service.description}>
+<section class="section-wrap page-heading"><a href="/services/" class="text-link">← All services</a><span class="eyebrow">{service.category.toUpperCase()} / SANDHYA VERMA</span><h1>{service.title}<br /><em>Made personal.</em></h1><p>{service.description}</p></section>
+<section class="section-wrap split-section detail-section"><div><span class="eyebrow">LET’S PLAN YOUR LOOK</span><h2>The details<br /><em>make the difference.</em></h2><ul class="clean-list">{service.inclusions.map(item=><li>✦ <span>{item}</span></li>)}</ul><p>Please share the date, venue, getting-ready time and any inspiration. The team will confirm availability, package inclusions and any travel requirements.</p></div><aside class="quote-card"><span class="eyebrow">SERVICE PRICING</span><h3>{priceLabel(service.price)}</h3><p>No date is reserved until availability and your booking arrangements are confirmed.</p><a href="/contact/" class="button">Request availability ↗</a><a href="/portfolio/" class="text-link">Explore the portfolio ↗</a></aside></section>
+</Layout>

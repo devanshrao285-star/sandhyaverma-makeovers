@@ -1,0 +1,23 @@
+---
+const { compact = false } = Astro.props;
+---
+<form class="enquiry-form" data-enquiry>
+<div class="form-grid">
+<label>Your name <input name="name" autocomplete="name" maxlength="100" required placeholder="How should we address you?" /></label>
+<label>Mobile number <input name="phone" type="tel" autocomplete="tel" maxlength="20" required placeholder="+91" /></label>
+<label>I’m interested in <select name="interest" required><option value="">Select an interest</option><option>Bridal makeup</option><option>Occasion makeup</option><option>Editorial & celebrity makeup</option><option>Academy courses</option><option>Personal makeup session</option><option>Something else</option></select></label>
+<label>Preferred date <span class="optional">(optional)</span><input name="date" type="date" /></label>
+</div>
+<label>Email <span class="optional">(optional)</span><input name="email" type="email" autocomplete="email" maxlength="150" placeholder="For a written follow-up" /></label>
+{!compact && <label>A little about your plans <span class="optional">(optional)</span><textarea name="message" maxlength="1500" rows="3" placeholder="Your occasion, inspiration, or what you’d like to learn…"></textarea></label>}
+<div class="honey" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+<label class="checkbox"><input type="checkbox" name="contactConsent" required /><span>I agree to be contacted about this enquiry and have read the <a href="/privacy/">privacy notice</a>.</span></label>
+<label class="checkbox"><input type="checkbox" name="marketingConsent" /><span>Also keep me informed about offers and academy updates. <span class="optional">(optional)</span></span></label>
+<div class="turnstile-container"></div>
+<button type="submit" class="button">Send enquiry <span aria-hidden="true">↗</span></button>
+<p class="form-note">An enquiry does not reserve a date. We’ll confirm availability with you first.</p>
+<p role="status" aria-live="polite" class="form-status"></p>
+</form>
+<script>
+import '../scripts/enquiry';
+</script>

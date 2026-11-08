@@ -1,0 +1,19 @@
+---
+import EnquiryForm from './EnquiryForm.astro';
+---
+<dialog class="lead-dialog" id="lead-dialog" aria-labelledby="lead-dialog-title">
+  <div class="lead-dialog__header">
+    <div><span class="eyebrow">A PERSONAL INVITATION</span><h2 id="lead-dialog-title">Let’s make a plan.</h2></div>
+    <button class="dialog-close" type="button" data-dialog-close aria-label="Close enquiry form">×</button>
+  </div>
+  <p>Tell us about your occasion or learning goals. The team will confirm availability with you.</p>
+  <EnquiryForm compact />
+</dialog>
+<script>
+const dialog = document.querySelector<HTMLDialogElement>('#lead-dialog');
+const dismissed = 'sv-enquiry-dialog-dismissed';
+const close = () => { dialog?.close(); sessionStorage.setItem(dismissed, 'true'); };
+dialog?.querySelector('[data-dialog-close]')?.addEventListener('click', close);
+dialog?.addEventListener('click', event => { if (event.target === dialog) close(); });
+if (dialog && !sessionStorage.getItem(dismissed)) window.setTimeout(() => dialog.showModal(), 12000);
+</script>

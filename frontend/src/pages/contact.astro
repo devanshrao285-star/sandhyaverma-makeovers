@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeading from '../components/PageHeading.astro';
+import EnquiryForm from '../components/EnquiryForm.astro';
+import {content} from '../data/content';
+const phone=content.phone.replace(/\D/g,'');
+const mapUrl='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(content.address);
+---
+<Layout title="Contact & enquiries" description="Enquire about makeup services and academy courses at SandhyaVermaMakeovers in Janakpuri, West Delhi.">
+<PageHeading eyebrow="LET’S CONNECT" title="Something beautiful" accent="begins with hello." text="A date to celebrate, a look to create, or a skill to learn. Tell us what you have in mind." />
+<section class="section-wrap contact-grid"><aside class="contact-info"><span class="eyebrow">VISIT THE STUDIO</span><h2>Find us in<br /><em>Janakpuri.</em></h2><p>{content.address}</p><a class="text-link" href={mapUrl} target="_blank" rel="noopener noreferrer">Find directions ↗</a><div class="contact-detail"><span>VISITING HOURS</span><p>{content.openingHours}</p></div><div class="contact-detail"><span>CALL THE STUDIO</span>{phone ? <a href={'tel:+'+phone}>{content.phone}</a> : <p>Contact number to be added before launch.</p>}</div>{content.email && <div class="contact-detail"><span>EMAIL</span><a href={'mailto:'+content.email}>{content.email}</a></div>}{phone && <a class="text-link" href={'https://wa.me/'+phone} target="_blank" rel="noopener noreferrer">Chat on WhatsApp ↗</a>}</aside><div class="form-panel"><span class="eyebrow">YOUR ENQUIRY</span><h3>Let’s make a plan.</h3><EnquiryForm /></div></section>
+</Layout>

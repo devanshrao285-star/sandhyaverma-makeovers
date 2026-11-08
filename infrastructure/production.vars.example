@@ -1,0 +1,22 @@
+# Public build configuration for sandhyavermamakeovers.online.
+# Add values in Cloudflare Pages; do not commit real secrets.
+PUBLIC_SITE_URL=https://sandhyavermamakeovers.online
+PUBLIC_LAUNCH_READY=false
+
+# Pages Functions runtime variables
+ENVIRONMENT=production
+SITE_ORIGIN=https://sandhyavermamakeovers.online
+ADMIN_EMAILS=devanshrao135@gmail.com
+FORM_ENABLED=false
+
+# Configure after Cloudflare Access and Turnstile are created.
+ACCESS_TEAM_DOMAIN=your-team.cloudflareaccess.com
+ACCESS_AUD=your-access-audience
+TURNSTILE_SITE_KEY=your-turnstile-site-key
+
+# Add the following through Pages Secrets, never in this file:
+# TURNSTILE_SECRET
+# RATE_SALT
+# BUILD_TOKEN
+# DEPLOY_HOOK
+# CONTENT_API_URL=https://sandhyavermamakeovers.online/api/build/snapshot
