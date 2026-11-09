@@ -10,6 +10,7 @@ FORM_ENABLED = "true"
 TURNSTILE_SITE_KEY = "0x4AAAAAAF5gtivUOl0MonDF"
 ACCESS_TEAM_DOMAIN = "rapid-butterfly-6748.cloudflareaccess.com"
 ACCESS_AUD = "583224c78f3cc9ea3633c00950bc82846cbc06bc4616e3d82690bbaa0880e51e"
+PUBLIC_LAUNCH_READY = "true"
 
 [[d1_databases]]
 binding = "DB"

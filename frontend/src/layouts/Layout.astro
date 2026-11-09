@@ -10,6 +10,31 @@ const path = Astro.url.pathname;
 const nav = [['/', 'Home'], ['/about/', 'About'], ['/academy/', 'Academy'], ['/services/', 'Makeup services'], ['/portfolio/', 'Portfolio'], ['/contact/', 'Contact']];
 const canonical = new URL(path, Astro.site);
 const favicon = await getImage({src:monogram,width:64,height:64,format:'png'});
+const structuredData = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': ['BeautySalon', 'EducationalOrganization'],
+  name: 'Sandhya Verma Makeovers',
+  alternateName: content.brand,
+  url: Astro.site?.toString(),
+  telephone: content.phone,
+  email: content.email,
+  priceRange: '₹₹',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'C5B/7A, Janakpuri',
+    addressLocality: 'New Delhi',
+    addressRegion: 'Delhi',
+    postalCode: '110058',
+    addressCountry: 'IN'
+  },
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    opens: '10:00',
+    closes: '17:00'
+  },
+  areaServed: ['Janakpuri', 'West Delhi', 'Delhi NCR']
+}).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang="en">
@@ -19,7 +44,9 @@ const favicon = await getImage({src:monogram,width:64,height:64,format:'png'});
 <link rel="canonical" href={canonical} /><link rel="icon" type="image/png" href={favicon.src} />
 <meta name="theme-color" content="#111110" /><meta name="robots" content={admin || !launchReady ? 'noindex, nofollow' : 'index, follow'} />
 <meta property="og:title" content={title + ' | ' + content.brand} /><meta property="og:description" content={description} />
-<meta property="og:type" content="website" /><meta property="og:url" content={canonical} />
+<meta property="og:type" content="website" /><meta property="og:url" content={canonical} /><meta property="og:locale" content="en_IN" />
+<meta name="twitter:card" content="summary" />
+{!admin && launchReady && <script type="application/ld+json" set:html={structuredData} />}
 <meta name="publication-revision" content={revision} />
 </head>
 <body>
