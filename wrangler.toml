@@ -4,6 +4,9 @@ pages_build_output_dir = "frontend/dist"
 
 [vars]
 ENVIRONMENT = "production"
+SITE_ORIGIN = "https://sandhyavermamakeovers.online"
+ADMIN_EMAILS = "devanshrao135@gmail.com"
+FORM_ENABLED = "false"
 
 [[d1_databases]]
 binding = "DB"
