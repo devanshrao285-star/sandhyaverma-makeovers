@@ -8,7 +8,7 @@ ENVIRONMENT = "production"
 [[d1_databases]]
 binding = "DB"
 database_name = "makeover-db"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "5f6094ec-edd1-4d87-ab06-098ab983181b"
 migrations_dir = "backend/migrations"
 
 [[r2_buckets]]
