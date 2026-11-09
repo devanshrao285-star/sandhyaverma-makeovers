@@ -5,7 +5,6 @@ pages_build_output_dir = "frontend/dist"
 [vars]
 ENVIRONMENT = "production"
 SITE_ORIGIN = "https://sandhyavermamakeovers.online"
-CONTENT_API_URL = "https://sandhyavermamakeovers.online/api/build/snapshot"
 ADMIN_EMAILS = "devanshrao135@gmail.com,devanshrao285@gmail.com"
 FORM_ENABLED = "true"
 TURNSTILE_SITE_KEY = "0x4AAAAAAF5gtivUOl0MonDF"
