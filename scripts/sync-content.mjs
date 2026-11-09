@@ -11,9 +11,10 @@ if (!source) {
 if (!token) throw new Error('BUILD_TOKEN is required when CONTENT_API_URL is configured.');
 const endpoint = new URL(source);
 if (endpoint.protocol !== 'https:') throw new Error('Publication source must use HTTPS.');
-async function fetchSource(url, maxBytes) {
+async function fetchSource(url, maxBytes, allowNotFound = false) {
   if (url.origin !== endpoint.origin) throw new Error('Cross-origin media source rejected.');
   const response = await fetch(url, { headers: { Authorization: 'Bearer ' + token }, redirect: 'error', signal: AbortSignal.timeout(30000) });
+  if (allowNotFound && response.status === 404) return null;
   if (!response.ok) throw new Error('Publication source returned ' + response.status);
   const chunks = []; let total = 0;
   for await (const chunk of response.body) {
@@ -23,7 +24,12 @@ async function fetchSource(url, maxBytes) {
   }
   return Buffer.concat(chunks);
 }
-const snapshot = JSON.parse((await fetchSource(endpoint, 100000)).toString());
+const snapshotBytes = await fetchSource(endpoint, 100000, true);
+if (!snapshotBytes) {
+  console.log('No publication is ready; building the repository preview content.');
+  process.exit(0);
+}
+const snapshot = JSON.parse(snapshotBytes.toString());
 if (!/^[a-f0-9-]{36}$/.test(snapshot.revision) || !Array.isArray(snapshot.content?.gallery) || snapshot.content.gallery.length > 100) throw new Error('Invalid publication snapshot.');
 const mediaDir = path.join(root, 'frontend/public/media');
 await mkdir(mediaDir, { recursive: true });
