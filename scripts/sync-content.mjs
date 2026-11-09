@@ -4,11 +4,11 @@ import sharp from 'sharp';
 const root = process.cwd();
 const source = process.env.CONTENT_API_URL;
 const token = process.env.BUILD_TOKEN;
-if (!source && !token) {
+if (!source) {
   console.log('No publication source configured; building the repository preview content.');
   process.exit(0);
 }
-if (!source || !token) throw new Error('Both CONTENT_API_URL and BUILD_TOKEN are required.');
+if (!token) throw new Error('BUILD_TOKEN is required when CONTENT_API_URL is configured.');
 const endpoint = new URL(source);
 if (endpoint.protocol !== 'https:') throw new Error('Publication source must use HTTPS.');
 async function fetchSource(url, maxBytes) {
