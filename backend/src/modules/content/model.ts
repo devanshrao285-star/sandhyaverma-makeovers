@@ -3,7 +3,7 @@ export interface Course { id: string; title: string; description: string; durati
 export interface GalleryItem { id: string; title: string; category: string; mediaId?: string; imageUrl?: string }
 export interface VideoItem { id: string; title: string; category: string; embedUrl: string }
 export interface Testimonial { id: string; quote: string; name: string; occasion: string; preview: boolean; mediaId?: string; imageUrl?: string }
-export interface HomeContent { eyebrow: string; title: string; accent: string; description: string }
+export interface HomeContent { eyebrow: string; title: string; accent: string; description: string; mediaId?: string; imageUrl?: string }
 export interface Content {
   brand: string; tagline: string; phone: string; email: string; address: string; openingHours: string;
   home: HomeContent;
@@ -56,7 +56,8 @@ export function validateContent(value: unknown): Content {
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new ValidationError('Invalid email.');
   const home=v.home as HomeContent;
   if(!home||typeof home!=='object') throw new ValidationError('Homepage content is required.');
-  return { brand: text(v.brand, 100), tagline: text(v.tagline, 150), phone, email, address: text(v.address, 250), openingHours: text(v.openingHours, 100), home:{eyebrow:text(home.eyebrow,100),title:text(home.title,100),accent:text(home.accent,100),description:text(home.description,500)}, services, courses, gallery, videos, testimonials, offer: { title: text(offer.title, 100, false), description: text(offer.description, 300, false), enabled: offer.enabled, endsAt: text(offer.endsAt, 10, false) } };
+  const homeMedia=mediaReference(home);
+  return { brand: text(v.brand, 100), tagline: text(v.tagline, 150), phone, email, address: text(v.address, 250), openingHours: text(v.openingHours, 100), home:{eyebrow:text(home.eyebrow,100),title:text(home.title,100),accent:text(home.accent,100),description:text(home.description,500),...homeMedia}, services, courses, gallery, videos, testimonials, offer: { title: text(offer.title, 100, false), description: text(offer.description, 300, false), enabled: offer.enabled, endsAt: text(offer.endsAt, 10, false) } };
 }
 function slug(v: unknown) { const s = text(v, 70); if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(s)) throw new ValidationError('Use lowercase words separated by hyphens for IDs.'); return s; }
 function mediaReference(value: { mediaId?: unknown; imageUrl?: unknown }, required = false) {

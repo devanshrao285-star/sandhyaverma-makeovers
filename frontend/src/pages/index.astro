@@ -4,7 +4,8 @@ import { content, priceLabel } from '../data/content';
 import { offerActive } from '../../../backend/src/modules/content/model';
 import LeadModal from '../components/LeadModal.astro';
 const assetUrl=(item:{mediaId?:string;imageUrl?:string})=>item.imageUrl || (item.mediaId ? '/media/'+item.mediaId+'.webp' : undefined);
-const heroImages=content.gallery.map(assetUrl).filter((url):url is string=>Boolean(url));
+const galleryHeroImages=content.gallery.map(assetUrl).filter((url):url is string=>Boolean(url));
+const heroImages=[assetUrl(content.home),...galleryHeroImages].filter((url):url is string=>Boolean(url));
 const heroImage=heroImages[0] || '/images/brushes.jpg';
 ---
 <Layout title="Celebrity makeup artists in Janakpuri, Delhi" description="SandhyaVermaMakeovers: celebrity makeup artistry and a makeup academy in Janakpuri, West Delhi. Enquire about bridal, occasion makeup and learning.">

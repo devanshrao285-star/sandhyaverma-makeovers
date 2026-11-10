@@ -39,3 +39,15 @@ export async function uploadMedia(request:Request,env:Env) {
  await env.DB.prepare("UPDATE media SET state='ready' WHERE id=?").bind(id).run();
  return {id,name,bytes:length};
 }
+
+export async function deleteMedia(id:string,env:Env) {
+ const media=await env.DB.prepare("SELECT object_key,bytes FROM media WHERE id=? AND state='ready'").bind(id).first<{object_key:string;bytes:number}>();
+ if(!media)throw new HttpError(404,'Image not found.');
+ await env.MEDIA.delete(media.object_key);
+ await env.DB.batch([
+  env.DB.prepare('DELETE FROM media WHERE id=?').bind(id),
+  env.DB.prepare("UPDATE budgets SET amount=MAX(0,amount-?) WHERE key='storage'").bind(media.bytes),
+  env.DB.prepare("UPDATE budgets SET amount=MAX(0,amount-1) WHERE key='photo-count'")
+ ]);
+ return {ok:true};
+}

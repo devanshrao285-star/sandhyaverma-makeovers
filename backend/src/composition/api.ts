@@ -3,7 +3,7 @@ import { validateContent, ValidationError } from '../modules/content/model';
 import { createEnquiryService } from '../modules/enquiries/service';
 import { d1Enquiries } from '../adapters/enquiries';
 import { HttpError, isLocal, requireAdmin, requireBuild, sameOrigin, bodyJson, rateLimit, verifyBot, type Env } from '../adapters/security';
-import { readMedia, uploadMedia } from '../adapters/media';
+import { deleteMedia, readMedia, uploadMedia } from '../adapters/media';
 const json=(data:unknown,status=200)=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 const normalizeContent=(value:unknown)=>{const content=value as Record<string,unknown>;return {...content,openingHours:typeof content.openingHours==='string'&&content.openingHours.trim()?content.openingHours:'10:00 AM–5:00 PM',home:content.home||seed.home,videos:Array.isArray(content.videos)?content.videos:[],testimonials:Array.isArray(content.testimonials)?content.testimonials:[]};};
 export async function handleApi(request:Request,env:Env):Promise<Response> {
@@ -67,7 +67,19 @@ export async function handleApi(request:Request,env:Env):Promise<Response> {
    if(method==='GET'){const rows=await env.DB.prepare("SELECT id,name,bytes,created_at FROM media WHERE state='ready' ORDER BY created_at DESC LIMIT 500").all();const budgets=await env.DB.prepare('SELECT * FROM budgets ORDER BY key').all();return json({items:rows.results,budgets:budgets.results});}
    if(method==='POST')return json(await uploadMedia(request,env),201);
   }
-  if(path.startsWith('/api/admin/media/')&&method==='GET')return readMedia(path.split('/').pop()!,env);
+  if(path.startsWith('/api/admin/media/')){
+   const mediaId=path.split('/').pop()!;
+   if(method==='GET')return readMedia(mediaId,env);
+   if(method==='DELETE'){
+    const draft=await env.DB.prepare('SELECT body FROM content_drafts WHERE id=1').first<{body:string}>();
+    if(draft){
+     const content=JSON.parse(draft.body) as {home?:{mediaId?:string};gallery?:Array<{mediaId?:string}>;services?:Array<{mediaId?:string}>;testimonials?:Array<{mediaId?:string}>};
+     const inUse=[content.home,...(content.gallery||[]),...(content.services||[]),...(content.testimonials||[])].some(item=>item?.mediaId===mediaId);
+     if(inUse)throw new HttpError(409,'Remove this image from its page placement and save the draft before deleting it from the library.');
+    }
+    return json(await deleteMedia(mediaId,env));
+   }
+  }
   if(path==='/api/admin/publications'){
    if(method==='GET'){const rows=await env.DB.prepare('SELECT id,created_at,status FROM publications ORDER BY created_at DESC LIMIT 10').all();return json({items:rows.results});}
    if(method==='POST'){
@@ -77,7 +89,7 @@ export async function handleApi(request:Request,env:Env):Promise<Response> {
     const draft=await env.DB.prepare('SELECT body FROM content_drafts WHERE id=1').first<{body:string}>();
     if(!draft)throw new HttpError(400,'Save a draft first.');
     const content=validateContent(JSON.parse(draft.body));
-    for(const item of [...content.gallery,...content.services,...content.testimonials]){if(item.mediaId){const found=await env.DB.prepare("SELECT id FROM media WHERE id=? AND state='ready'").bind(item.mediaId).first();if(!found)throw new HttpError(400,'An assigned image is missing.');}}
+    for(const item of [content.home,...content.gallery,...content.services,...content.testimonials]){if(item.mediaId){const found=await env.DB.prepare("SELECT id FROM media WHERE id=? AND state='ready'").bind(item.mediaId).first();if(!found)throw new HttpError(400,'An assigned image is missing.');}}
     const key='publish:'+new Date().toISOString().slice(0,7);
     const budget=await env.DB.prepare('INSERT INTO budgets (key,amount) VALUES (?,1) ON CONFLICT(key) DO UPDATE SET amount=amount+1 WHERE amount<100 RETURNING amount').bind(key).first();
     if(!budget)throw new HttpError(429,'The monthly content publication limit is reached.');
