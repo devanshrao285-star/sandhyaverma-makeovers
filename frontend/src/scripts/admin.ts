@@ -34,7 +34,7 @@ function renderFields(){
  draft.testimonials.forEach((testimonial,index)=>{field('Client name',testimonial.name,v=>testimonial.name=v);field('Occasion / service',testimonial.occasion,v=>testimonial.occasion=v);field('Testimonial',testimonial.quote,v=>testimonial.quote=v);action('Remove testimonial',()=>{draft.testimonials.splice(index,1);renderFields();});});
  action('Add testimonial',()=>{draft.testimonials.push({id:'testimonial-'+crypto.randomUUID().slice(0,8),name:'',occasion:'',quote:'',preview:false});renderFields();});
  root.append(element('h3','Portfolio page · videos'));
- draft.videos.forEach((video,index)=>{field('Video title',video.title,v=>video.title=v);field('Category',video.category,v=>video.category=v);field('YouTube/Instagram embed or Pexels MP4 URL',video.embedUrl,v=>video.embedUrl=v);action('Remove video',()=>{draft.videos.splice(index,1);renderFields();});});
+ draft.videos.forEach((video,index)=>{field('Video title',video.title,v=>video.title=v);field('Category',video.category,v=>video.category=v);field('YouTube embed, Instagram Reel or Pexels MP4 URL',video.embedUrl,v=>video.embedUrl=v);action('Remove video',()=>{draft.videos.splice(index,1);renderFields();});});
  action('Add video',()=>{draft.videos.push({id:'video-'+crypto.randomUUID().slice(0,8),title:'',category:'Studio work',embedUrl:''});renderFields();});
  syncJson();
 }

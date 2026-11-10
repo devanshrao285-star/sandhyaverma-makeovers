@@ -23,6 +23,7 @@ test('validates content and prevents negative/fractional paise and duplicate slu
  for(const field of ['courses','gallery'])assert.throws(()=>validateContent({...seed,[field]:[null]}),ValidationError);
  assert.throws(()=>validateContent({...seed,offer:{...seed.offer,enabled:true,endsAt:'2027-02-30'}}),ValidationError);
  assert.throws(()=>validateContent({...seed,videos:[{id:'showreel',title:'Showreel',category:'Studio',embedUrl:'https://example.com/embed/video'}]}),ValidationError);
+ const reel=structuredClone(seed);reel.videos=[{id:'showreel',title:'Showreel',category:'Studio',embedUrl:'https://www.instagram.com/reel/De2HXGOhxSM/?utm_source=ig_web_copy_link'}];assert.equal(validateContent(reel).videos[0].embedUrl,'https://www.instagram.com/reel/De2HXGOhxSM/embed/');
 });
 test('offers expire at end of the date in India',()=>{
  const offer={enabled:true,title:'Example',description:'',endsAt:'2026-11-07'};

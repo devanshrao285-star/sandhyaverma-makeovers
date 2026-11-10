@@ -36,7 +36,7 @@ export function validateContent(value: unknown): Content {
   });
   const videos = v.videos.map((video: VideoItem) => {
     if (!video || typeof video !== 'object') throw new ValidationError('Invalid video.');
-    const embedUrl=text(video.embedUrl,500);
+    const embedUrl=normalizeVideoUrl(text(video.embedUrl,500));
     if (!isApprovedEmbed(embedUrl)) throw new ValidationError('Use an approved YouTube, Instagram or Pexels video URL.');
     return {id:slug(video.id),title:text(video.title,100),category:text(video.category,40),embedUrl};
   });
@@ -66,6 +66,16 @@ function mediaReference(value: { mediaId?: unknown; imageUrl?: unknown }, requir
   if (required&&!mediaId&&!imageUrl) throw new ValidationError('Each portfolio item needs an image.');
   if (imageUrl&&!/^\/(images|media)\/[a-z0-9-]+\.(webp|png|jpe?g)$/.test(imageUrl)) throw new ValidationError('Preview images must be local image files.');
   return {mediaId,imageUrl};
+}
+function normalizeVideoUrl(value:string) {
+  try {
+    const url=new URL(value);
+    if ((url.hostname==='instagram.com'||url.hostname==='www.instagram.com') && /^\/reel\/[\w-]+\/?$/.test(url.pathname)) {
+      const shortcode=url.pathname.split('/')[2];
+      return `https://www.instagram.com/reel/${shortcode}/embed/`;
+    }
+  } catch { /* Validation below returns the user-facing error. */ }
+  return value;
 }
 function isApprovedEmbed(value:string) { try { const url=new URL(value); return url.protocol==='https:' && ((url.hostname==='www.youtube.com'&&url.pathname.startsWith('/embed/'))||url.hostname==='www.youtube-nocookie.com'&&url.pathname.startsWith('/embed/')||(url.hostname==='www.instagram.com'&&/^\/reel\/[\w-]+\/embed\/$/.test(url.pathname))||(url.hostname==='www.pexels.com'&&url.pathname.startsWith('/video/'))||(url.hostname==='videos.pexels.com'&&/^\/video-files\/\d+\/[^/]+\.mp4$/.test(url.pathname))); } catch { return false; } }
 function validDate(value: unknown): value is string {
