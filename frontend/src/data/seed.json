@@ -6,6 +6,7 @@
   "address": "C5B/7A, Janakpuri, New Delhi, Delhi 110058",
   "openingHours": "10:00 AM–5:00 PM",
   "home": {"eyebrow":"CELEBRITY MAKEUP ARTISTS · DELHI","title":"Not just a look.","accent":"A feeling. Entirely you.","description":"From your most-awaited moment to your first step into artistry. Discover makeup with intention, and a space to learn the craft."},
+  "about": {},
   "services": [
     {
       "id": "bridal-makeup",
@@ -74,7 +75,9 @@
   ],
   "videos": [
     {"id":"celebrity-glam","title":"Celebrity glam","category":"Official Instagram Reel","embedUrl":"https://www.instagram.com/reel/De2HXGOhxSM/embed/"},
-    {"id":"bridal-artistry-reel","title":"Bridal artistry","category":"Official Instagram Reel","embedUrl":"https://www.instagram.com/reel/DeyQm4fBtLK/embed/"}
+    {"id":"bridal-artistry-reel","title":"Bridal artistry","category":"Official Instagram Reel","embedUrl":"https://www.instagram.com/reel/DeyQm4fBtLK/embed/"},
+    {"id":"signature-glam-reel","title":"Signature glam","category":"Official Instagram Reel","embedUrl":"https://www.instagram.com/reel/DSo93CvAUDa/embed/"},
+    {"id":"studio-moment-reel","title":"Studio moment","category":"Official Instagram Reel","embedUrl":"https://www.instagram.com/reel/DMreTZ5huwY/embed/"}
   ],
   "testimonials": [
     {"id":"preview-bridal-note","quote":"The preview testimonial area will become a space for real client stories and wedding-day feedback.","name":"Preview client","occasion":"Replace before launch","preview":true},
