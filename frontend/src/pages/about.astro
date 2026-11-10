@@ -2,7 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import PageHeading from '../components/PageHeading.astro';
 import {content} from '../data/content';
-const ownerImage=content.about.imageUrl || (content.about.mediaId ? '/media/'+content.about.mediaId+'.webp' : '/images/studio-wall-logo.png');
+const aboutContent=content.about ?? {};
+const ownerImage=aboutContent.imageUrl || (aboutContent.mediaId ? '/media/'+aboutContent.mediaId+'.webp' : '/images/studio-wall-logo.png');
 ---
 <Layout title="About the studio" description="Meet Sandhya Verma, celebrity makeup artist and salon owner in Janakpuri, West Delhi.">
 <PageHeading eyebrow="THE STUDIO / OUR STORY" title="Celebrity artistry." accent="Personal attention." text="Sandhya Verma Makeovers brings camera-ready beauty, occasion glamour and a considered one-to-one approach to every booking." />
