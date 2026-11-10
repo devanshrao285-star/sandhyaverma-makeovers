@@ -89,7 +89,7 @@ export async function handleApi(request:Request,env:Env):Promise<Response> {
     if(!env.DEPLOY_HOOK||!env.BUILD_TOKEN)throw new HttpError(503,'Publishing is not configured. Your draft is saved; connect a Pages deploy hook and build token first.');
     const hook=new URL(env.DEPLOY_HOOK);
     if(hook.protocol!=='https:'||hook.hostname!=='api.cloudflare.com'||!hook.pathname.startsWith('/client/v4/pages/webhooks/deploy_hooks/'))throw new HttpError(503,'Invalid publication configuration.');
-    const draft=await env.DB.prepare('SELECT body FROM content_drafts WHERE id=1').first<{body:string}>();
+    const draft=await primary(env).prepare('SELECT body FROM content_drafts WHERE id=1').first<{body:string}>();
     if(!draft)throw new HttpError(400,'Save a draft first.');
     const content=validateContent(JSON.parse(draft.body));
     for(const item of [content.home,content.about,...content.gallery,...content.services,...content.testimonials]){if(item.mediaId){const found=await env.DB.prepare("SELECT id FROM media WHERE id=? AND state='ready'").bind(item.mediaId).first();if(!found)throw new HttpError(400,'An assigned image is missing.');}}
