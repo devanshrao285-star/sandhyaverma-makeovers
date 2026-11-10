@@ -73,7 +73,8 @@
     {"id":"preview-academy-kit","title":"The artist’s kit","category":"Academy","imageUrl":"/images/portfolio-academy.webp"}
   ],
   "videos": [
-    {"id":"preview-brushes-film","title":"Brushes in motion","category":"Temporary stock video","embedUrl":"https://videos.pexels.com/video-files/4718669/4718669-uhd_2160_4096_25fps.mp4"}
+    {"id":"celebrity-glam","title":"Celebrity glam","category":"Official Instagram Reel","embedUrl":"https://www.instagram.com/reel/De2HXGOhxSM/embed/"},
+    {"id":"bridal-artistry-reel","title":"Bridal artistry","category":"Official Instagram Reel","embedUrl":"https://www.instagram.com/reel/DeyQm4fBtLK/embed/"}
   ],
   "testimonials": [
     {"id":"preview-bridal-note","quote":"The preview testimonial area will become a space for real client stories and wedding-day feedback.","name":"Preview client","occasion":"Replace before launch","preview":true},
