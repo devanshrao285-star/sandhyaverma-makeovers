@@ -6,6 +6,9 @@ import { HttpError, isLocal, requireAdmin, requireBuild, sameOrigin, bodyJson, r
 import { deleteMedia, readMedia, uploadMedia } from '../adapters/media';
 const json=(data:unknown,status=200)=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 const normalizeContent=(value:unknown)=>{const content=value as Record<string,unknown>;return {...content,openingHours:typeof content.openingHours==='string'&&content.openingHours.trim()?content.openingHours:'10:00 AM–5:00 PM',home:content.home||seed.home,about:content.about||seed.about||{},videos:Array.isArray(content.videos)?content.videos:[],testimonials:Array.isArray(content.testimonials)?content.testimonials:[]};};
+// Publishing must always read the primary D1 copy. A Pages build is a separate
+// request, so an unconstrained read could otherwise observe an older replica.
+const primary=(env:Env)=>env.DB.withSession('first-primary');
 export async function handleApi(request:Request,env:Env):Promise<Response> {
  try {
   const path=new URL(request.url).pathname.replace(/\/$/,'');
@@ -24,7 +27,7 @@ export async function handleApi(request:Request,env:Env):Promise<Response> {
    await requireBuild(request,env);
    if(method!=='GET')throw new HttpError(405,'Method not allowed.');
    if(path==='/api/build/snapshot'){
-    const row=await env.DB.prepare("SELECT id,body FROM publications WHERE status IN ('requested','queued') ORDER BY created_at DESC LIMIT 1").first<{id:string;body:string}>();
+    const row=await primary(env).prepare("SELECT id,body FROM publications WHERE status IN ('requested','queued') ORDER BY created_at DESC LIMIT 1").first<{id:string;body:string}>();
     if(!row)throw new HttpError(404,'No publication is ready.');
     return json({revision:row.id,content:JSON.parse(row.body)});
    }
@@ -50,7 +53,7 @@ export async function handleApi(request:Request,env:Env):Promise<Response> {
   }
   if(path==='/api/admin/content'){
    if(method==='GET'){
-    const draft=await env.DB.prepare('SELECT body,version FROM content_drafts WHERE id=1').first<{body:string;version:number}>();
+    const draft=await primary(env).prepare('SELECT body,version FROM content_drafts WHERE id=1').first<{body:string;version:number}>();
     return json({content:draft?normalizeContent(JSON.parse(draft.body)):seed,version:draft?.version||0});
    }
    if(method==='PUT'){
@@ -71,7 +74,7 @@ export async function handleApi(request:Request,env:Env):Promise<Response> {
    const mediaId=path.split('/').pop()!;
    if(method==='GET')return readMedia(mediaId,env);
    if(method==='DELETE'){
-    const draft=await env.DB.prepare('SELECT body FROM content_drafts WHERE id=1').first<{body:string}>();
+    const draft=await primary(env).prepare('SELECT body FROM content_drafts WHERE id=1').first<{body:string}>();
     if(draft){
      const content=JSON.parse(draft.body) as {home?:{mediaId?:string};about?:{mediaId?:string};gallery?:Array<{mediaId?:string}>;services?:Array<{mediaId?:string}>;testimonials?:Array<{mediaId?:string}>};
      const inUse=[content.home,content.about,...(content.gallery||[]),...(content.services||[]),...(content.testimonials||[])].some(item=>item?.mediaId===mediaId);
