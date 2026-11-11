@@ -2,9 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import PageHeading from '../../components/PageHeading.astro';
 import {content,priceLabel} from '../../data/content';
+const assetUrl=(item:{mediaId?:string;imageUrl?:string})=>item.imageUrl || (item.mediaId ? '/media/'+item.mediaId+'.webp' : undefined);
+const fallbackImages=['/images/portfolio-bridal.webp','/images/generated/occasion-makeup-editorial.webp','/images/generated/editorial-makeup-still-life.webp'];
 ---
 <Layout title="Makeup services & pricing" description="Explore bridal, occasion and editorial makeup enquiries at SandhyaVermaMakeovers in Janakpuri, West Delhi.">
 <PageHeading eyebrow="THE SERVICE EDIT" title="Every moment deserves" accent="its own kind of beautiful." text="Explore the look you have in mind. Final packages, inclusions and pricing are confirmed with you before any booking." />
-<section class="section-wrap service-list">{content.services.map((s,i)=><article class="service-row"><div class="service-index">0{i+1}</div><div><span class="eyebrow">{s.category}</span><h2>{s.title}</h2><p>{s.description}</p><ul class="clean-list">{s.inclusions.map(item=><li>✦ <span>{item}</span></li>)}</ul></div><div class="service-price"><span class="eyebrow">YOUR QUOTATION</span><h3>{priceLabel(s.price)}</h3><p>{s.price === null ? 'Prices awaiting confirmation.' : 'Confirm final inclusions with the team.'}</p><a class="button button-outline" href={'/services/'+s.id+'/'}>Explore this service ↗</a></div></article>)}</section>
+<section class="section-wrap service-list">{content.services.map((s,i)=>{const image=assetUrl(s) || fallbackImages[i % fallbackImages.length];return <article class="service-row"><div class="service-index">0{i+1}</div><div class="service-row-copy"><span class="eyebrow">{s.category}</span><h2>{s.title}</h2><p>{s.description}</p><ul class="clean-list">{s.inclusions.map(item=><li>✦ <span>{item}</span></li>)}</ul></div><div class="service-row-visual"><img src={image} alt={s.title} loading="lazy" /></div><div class="service-price"><span class="eyebrow">YOUR QUOTATION</span><h3>{priceLabel(s.price)}</h3><p>{s.price === null ? 'Prices awaiting confirmation.' : 'Confirm final inclusions with the team.'}</p><a class="button button-outline" href={'/services/'+s.id+'/'}>Explore this service ↗</a></div></article>})}</section>
 <section class="section-wrap cta-section"><div><span class="eyebrow">A LITTLE DIFFERENT?</span><h2>Tell us what<br /><em>you have in mind.</em></h2></div><a href="/contact/" class="button">Let’s talk ↗</a></section>
 </Layout>
