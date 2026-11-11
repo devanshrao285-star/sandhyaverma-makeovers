@@ -34,6 +34,8 @@ if (!/^[a-f0-9-]{36}$/.test(snapshot.revision) || !Array.isArray(snapshot.conten
 const mediaDir = path.join(root, 'frontend/public/media');
 await mkdir(mediaDir, { recursive: true });
 const ids = [...new Set([
+  snapshot.content.home?.mediaId,
+  snapshot.content.about?.mediaId,
   ...snapshot.content.gallery.map(item => item.mediaId),
   ...snapshot.content.services.map(item => item.mediaId),
   ...snapshot.content.testimonials.map(item => item.mediaId)

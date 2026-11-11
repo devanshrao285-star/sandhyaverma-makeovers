@@ -36,7 +36,7 @@ Create a Pages deploy hook and configure DEPLOY_HOOK and BUILD_TOKEN as runtime 
 
 Admin Save Draft uses optimistic version checks. Publish records an immutable content snapshot, validates referenced media, reserves one of 100 monthly publication requests, then calls the deploy hook. A queued publication means the hook accepted it; it is not a confirmed deployment. Inspect Cloudflare's build result and the deployed HTML's publication-revision meta tag. The previous successful site survives a failed build.
 
-The sync script reads the latest queued/requested snapshot, downloads approved R2 photos through the authenticated build API, processes them locally into WebP, and writes ignored generated assets. The snapshot and the draft read that creates it are pinned to D1's primary database session so a new publish cannot capture an older replica. D1 versioned snapshots contain only public content. No enquiries are in the build export. Repeated publishes may be coalesced to the latest revision by the build reader; each requested build consumes quota.
+The sync script reads the latest queued/requested snapshot, downloads approved Home, About, gallery, service and testimonial photos through the authenticated build API, processes them locally into WebP, and writes ignored generated assets. The snapshot and the draft read that creates it are pinned to D1's primary database session so a new publish cannot capture an older replica. D1 versioned snapshots contain only public content. No enquiries are in the build export. Repeated publishes may be coalesced to the latest revision by the build reader; each requested build consumes quota.
 
 ## Current limits before production
 
